@@ -1,0 +1,86 @@
+<div class="container">
+  <form class="m-2" [formGroup]="createActivity" (ngSubmit)="onSubmit()">
+    <div class="text-container">
+      <h1 *ngIf="!isEdit; else title">Registrar actividades</h1>
+      <ng-template #title>
+        <h1>Editar actividad</h1>
+      </ng-template>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="activity" class="form-label">Actividad <i class="text-danger">*</i></label>
+        <input type="text" class="form-control" id="activity" formControlName="activity"
+          [ngClass]="{ 'is-invalid': f['activity'].errors && f['activity'].touched}" />
+        <div *ngIf="f['activity'].errors && f['activity'].touched" class="invalid-feedback mb-2">
+          <div *ngIf="f['activity'].errors['required'] && f['activity'].touched">Actividad es requerido</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="state" class="form-label">Estado <i class="text-danger">*</i></label>
+        <select id="state" class="form-control" formControlName="state"
+          [ngClass]="{ 'is-invalid': f['state'].errors && f['state'].touched }">
+          <option [ngValue]='""' disabled>Seleccione estado</option>
+          <option *ngFor="let state of states" [ngValue]="state">
+            {{ state }}
+          </option>
+        </select>
+        <div *ngIf="f['state'].errors && f['state'].touched" class="invalid-feedback mb-2">
+          <div *ngIf="f['state'].errors['required'] && f['state'].touched">Estado es requerido</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="employee" class="form-label">Asignar Empleado <i class="text-danger">*</i></label>
+        <select *ngIf="!isEdit; else editing" id="employee" class="form-control" formControlName="employee"
+          [ngClass]="{ 'is-invalid': f['employee'].errors && f['employee'].touched}">
+          <option [ngValue]="" disabled>Seleccione empleado</option>
+          <option *ngFor="let employee of employees" [ngValue]="employee">
+            {{ employee.name }}
+          </option>
+        </select>
+        <ng-template #editing>
+          <select id="employee" class="form-control" formControlName="employee"
+            [ngClass]="{ 'is-invalid': f['employee'].errors && f['employee'].touched}">
+            <option [ngValue]="" disabled>Seleccione empleado</option>
+            <option *ngFor="let employee of employees" ngValue="employee">
+              {{ employee.name }}
+            </option>
+          </select>
+        </ng-template>
+        <div *ngIf="f['employee'].errors && f['employee'].touched" class="invalid-feedback mb-2">
+          <div *ngIf="f['employee'].errors['required'] && f['employee'].touched">Asignar empleado es requerido</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="estimatedDate" class="form-label">Fecha Estimada <i class="text-danger">*</i></label>
+        <input type="datetime-local" class="form-control" id="estimatedDate" formControlName="estimatedDate"
+          [ngClass]="{ 'is-invalid': f['estimatedDate'].errors && f['estimatedDate'].touched}">
+        <div *ngIf="f['estimatedDate'].errors && f['estimatedDate'].touched" class="invalid-feedback mb-2">
+          <div *ngIf="f['estimatedDate'].errors['required'] && f['estimatedDate'].touched">Fecha estimada es requerida
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="buttons-container mt-2">
+      <button data-toggle="modal" data-target="#modalSubmit" [disabled]="createActivity.invalid" type="submit"
+        class="btn btn-primary ">Guardar</button>
+      <button type="button" class="btn btn-secundary" (click)="goToCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div class="modal fade" id="modalSubmit" tabindex="-1" role="dialog" aria-labelledby="modalSubmitLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body center">
+        <h4>{{messageResponse}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"
+        (click)="goToConsulta()" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

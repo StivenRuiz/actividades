@@ -1,0 +1,64 @@
+<div class="container">
+  <section class="title-container">
+      <h1>Actividades</h1>
+      <button type="button" class="btn btn-primary" (click)="goToCreate()">Crear Actividad</button>
+  </section>
+  <section class="row">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Actividad</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Fecha Estimada</th>
+        <th scope="col">Días Retraso</th>
+        <th scope="col">Empleado Asignado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let activityWithDay of activitiesWithDays">
+        <th scope="row">{{activityWithDay?.activity?.name}}</th>
+        <td>{{activityWithDay?.activity?.state}}</td>
+        <td>{{activityWithDay?.activity?.estimatedDate | formatDate}}</td>
+        <td>{{activityWithDay.days > 0 ? activityWithDay?.days : 0 }}</td>
+        <td>{{activityWithDay?.activity?.employeeId?.name}}</td>
+        <td>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn bg-none" (click)="goToCreate(true, activityWithDay.activity)">
+              <img src="assets/icons/pen-solid.svg"
+                             class="align-middle"
+                             width="22"
+                             height="21"
+                             alt="icon search"
+                        >
+            </button>
+            <button data-toggle="modal" data-target="#modalSubmit"
+             type="button" class="btn bg-none" (click)="deleteActivity(activityWithDay?.activity?.idActivity)">
+              <img src="assets/icons/trash-solid.svg"
+                             class="align-middle"
+                             width="22"
+                             height="21"
+                             alt="icon search"
+                        >
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+</div>
+
+<div class="modal fade" id="modalSubmit" tabindex="-1" role="dialog" aria-labelledby="modalSubmitLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body center">
+        <h4>{{messageResponse}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
